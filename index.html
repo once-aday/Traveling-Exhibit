@@ -69,14 +69,16 @@
             padding: 3px;
             text-align: right;
             font-size:large;
-            color:aqua;
+            color:#04adad;
             cursor: pointer;
+            background-color:#010133;
+            text-align: center;
             
         }
         .photo-panel {
             display: none;
             position: fixed;
-            z-index: 1;
+            z-index: 3;
             border-radius: 3px;
             border: outset;
             border-width: thin;
@@ -158,17 +160,18 @@
             text-shadow: 1px 1px #044371;
             position: relative;
             display: inline-block;
-            z-index: 1;
+            z-index: 2;
             
         }
         .venue-button-li li{
             margin-bottom: 5px;
             cursor: pointer;
-            background-color: rgba(0, 0, 0, 0.2);
+            background-color: rgba(0, 0, 0, 0.1);
             padding: 1px 10px;
             border-radius: 10px;
             border: outset;
             border-width: thin;
+            border-bottom-color: aliceblue;
         }
         #venue-title {
             font-size: x-large;
@@ -214,11 +217,12 @@
 <div id='info-panel'>
     <h1 id='info-panel h1'><h1>
     <h2 id='info-panel h2'><h2></div>
-<div class='photo-panel'>
-    <div id='photo-close'>X</div>
-    <h1>Sea Star of Texas</h1>
-    <h2>This Sea star sculpture is 7.5 ft. tall and weighs 900 lbs.</h2>
-    <h3><img id='current-photo' src='http://i.imgur.com/in1AvT1.png'></h3>
+<div class='photo-panel' id='photo-panel'>
+    
+    <h1 id='photo-panel h1'>Sea Star of Texas</h1>
+    <h2 id='photo-panel h2'>This Sea star sculpture is 7.5 ft. tall and weighs 900 lbs.</h2>
+    <h3 id='current-photo-1'><img src='http://i.imgur.com/in1AvT1.png'></h3>
+    <div id='photo-close'>Close</div>
     
         </div>
         
@@ -258,6 +262,9 @@ $(document).ready(function() {
     $('#info-panel').click(function(event) {
         var sculptureName = String(event.target.textContent)
         console.log(sculptureName)
+        
+        populatePhotoPanel(sculptureName)
+        
         $(".photo-panel").fadeIn("slow");
 
     });
@@ -266,7 +273,36 @@ $(document).ready(function() {
     });
 }); 
 
-
+function populatePhotoPanel(sculptureName) {
+    console.log("New Photo Panel")
+    
+    var photoPanelImg = document.getElementById('current-photo-1');
+    var photoPanelDivH2 = document.getElementById('photo-panel h2');
+    var photoPanelDivH1 = document.getElementById('photo-panel h1');
+    
+    var sculpturePhotos = sculptureData[sculptureName][0][0]
+    console.log(sculpturePhotos)
+    
+    var sculpturePhotosText = sculptureData[sculptureName][1][0]
+    console.log(sculpturePhotosText)
+    
+    photoPanelDivH1.innerHTML = ""
+    photoPanelDivH1.innerHTML = sculptureName
+    
+    photoPanelDivH2.innerHTML = ""
+    photoPanelDivH2.innerHTML = sculpturePhotosText
+    
+    photoPanelImg.innerHTML = ""
+    photoPanelImg.innerHTML = "'<img id='" + sculptureName + "'" + 'src=' + "'" + sculpturePhotos + "'" + "/>'"
+    
+//    $('current-photo-1').html("")
+//    
+//    $('current-photo-1').append("'<img id='" + sculptureName + "'" + 'src=' + "'" + sculpturePhotos + "'" + "/>'")
+    
+    
+    
+    
+}
 
 function populateInfoWindow(venue) {
     
