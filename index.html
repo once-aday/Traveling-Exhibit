@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.22.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.22.0/mapbox-gl.css' rel='stylesheet' />
+    <script type="text/javascript" src="photo_urls.js"></script> 
+    <script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+    <script type="text/javascript" src="wa_data.js"></script> 
+    <link href="https://fonts.googleapis.com/css?family=Coiny|Roboto|Oswald" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=La+Belle+Aurore" rel="stylesheet">
+    <style>
+        body { margin:0; padding:0; background-color: #012640}
+        #map { position:absolute; top:0; bottom:0; width:100%; height:100%; z-index: 0}
+        #info-panel {
+            position: fixed;
+            z-index: 1;
+            bottom: 0;
+            width: 100%;
+            height: 25%;
+/*            margin-left: 25%;*/
+            border: none;
+            font-family: 'Oswald';
+            border-color: rgba(61, 150, 255, 0.69);
+/*            background-color: rgba(61, 150, 255, 0.69);*/
+            overflow: scroll;
+        }
+        #info-panel h1 {
+            color: #6cff00;
+            font-size: x-large;
+            text-align: center;
+            text-shadow: 1px 1px #044371;
+            
+        }
+        #info-panel h2 {
+            color: aquamarine;
+            font-size: small;
+            text-align: center;
+            
+            
+                
+        }
+        #info-panel li {
+            margin: 2px;
+            padding: 4px;
+            border-radius: 3px;
+            border: outset;
+            border-width: thin;
+            border-color: #84c6ff;
+            background: rgba(58, 96, 123, 0.74);
+            color: #b2f6ff;
+            font-size: medium;
+            list-style-type: none; 
+            text-align: center;
+            max-width: 175px;
+            display:inline-block;
+            align-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .title {
+            position: fixed;
+            z-index: 1;
+            padding-left: 45px;
+            font-family: 'La Belle Aurore', cursive;
+            font-size: 300%;
+            font-kerning: normal;
+            color: black;
+            align-content: center;
+            align-items: center;
+            text-align: center;
+            display:inline-block;
+            
+        }
+        .venue-button-li {
+            margin-top: 275px;
+            padding-left: 20px;
+            list-style-type: none;
+            font-family: 'Oswald';
+            color: gold;
+            font-size: medium;
+            text-shadow: 1px 1px #044371;
+            position: relative;
+            display: inline-block;
+            z-index: 1;
+            cursor: pointer;
+        }
+        #venue-title {
+            font-size: x-large;
+            font-family: 'La Belle Aurore', cursive;
+            color: black;
+            cursor:default;
+        }
+        #venue-guide-text {
+            position: relative;
+            font-size: 200%;
+            font-family: 'La Belle Aurore', cursive;
+            color: #000000;
+            cursor:auto;
+            text-align: center;
+            z-index: 1;
+            bottom: 1;
+            padding-top: 20%;
+            
+        }
+        
+    </style>
+    <div class='title'><b>2017</b>   <img class='wa-logo' src='http://washedashore.org/wp2/wp-content/uploads/logo-main.png'>   Traveling Exhibit</div>
+    
+</head>
+<body>
+
+    <div class='venue-button-li'><li id=venue-title>Venues for This Year</li>
+        
+
+    <li id='Harbortown Event Center'>Harbortown Event Center - Bandon, OR</li>
+<li id='Reiman Gardens'>Reiman Gardens - Ames, IA</li>
+<li id='Shedd Aquarium'>Shedd Aquarium - Chicago, IL</li>
+    <li id='Point Defiance Zoo &amp; Aquarium'>Point Defiance Zoo &amp; Aquarium - Tacoma, WA</li>
+    </div>
+
+    
+<div id='venue-guide-text'>Select a venue to see what we will have on display</div>
+    
+    
+<div id='info-panel'>
+    <h1 id='info-panel h1'><h1>
+    <h2 id='info-panel h2'><h2></div>
+<div id='map'></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1Ijoib25jZWFkYXkiLCJhIjoiY2lqdThkb25mMGQ5bXU3bThhMjlzZWV2cSJ9.9VILu65Um-aP_J04RRO32w';
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/onceaday/ciyc2hwv500112sp5h9mjzy3b', 
+    center: [-105.00, 33.82], // starting position
+    zoom: 2.9
+});
+    
+map.on('load', function() {
+    // Add a GeoJSON source containing place coordinates and information.
+    map.addSource('data', {
+        "type": 'vector',
+        "data": 'mapbox://onceaday.carldpm6'
+    });
+});
+
+$(document).ready(function() {
+    $('.venue-button-li').click(function(event) {
+        var venueName = String(event.target.id)
+        
+        var guideDiv = document.getElementById('venue-guide-text');
+        guideDiv.innerHTML = ""
+        
+        populateInfoWindow(venueName)
+        flyToVenue(venueName)
+        
+
+    });
+});
+    
+$(document).ready(function() {
+    $('#info-panel').click(function(event) {
+        var sculptureName = String(event.target.textContent)
+        console.log(sculptureName)
+
+    });
+}); 
+
+
+
+function populateInfoWindow(venue) {
+    
+    var infoPanelDivH2 = document.getElementById('info-panel h2');
+    var infoPanelDivH1 = document.getElementById('info-panel h1');
+    
+    console.log(venueData[venue]);
+    var newHTML = venueData[venue][0];
+    
+    
+    infoPanelDivH2.innerHTML = String(newHTML); 
+    infoPanelDivH1.innerHTML = "Sculptures scheduled for <b>" + String(venue); 
+       
+}
+
+function flyToVenue(venue) {
+        
+    console.log("They clicked fly To " + String(venue))
+    var end = venueData[venue][1];
+    console.log(end)
+    var isAtStart = true;
+    var target = isAtStart ? end : start;
+    map.flyTo({
+        center: target,
+        zoom: 5,
+        speed: 1.5,
+        curve: 1
+    })
+};
+    
+    
+</script>
+
+</body>
+</html>
