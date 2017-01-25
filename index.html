@@ -33,7 +33,7 @@
             overflow: scroll;
         }
         #info-panel h1 {
-            color: #6cff00;
+            color: #48ff64;
             font-size: x-large;
             text-align: center;
             text-shadow: 1px 1px #044371;
@@ -65,6 +65,74 @@
             align-items: center;
             cursor: pointer;
         }
+        #photo-close {
+            padding: 3px;
+            text-align: right;
+            font-size:large;
+            color:aqua;
+            cursor: pointer;
+            
+        }
+        .photo-panel {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            border-radius: 3px;
+            border: outset;
+            border-width: thin;
+            background-color: rgba(0, 0, 0, 1.0);
+            right: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            margin-top: 170px;
+            overflow: scroll;
+            text-align: center;
+            font-family: 'La Belle Aurore', cursive;
+            color: #000000;
+            
+        }
+        .photo-panel h1 {
+            padding-top:10px;
+            color: aqua;
+            
+            
+        }
+        .photo-panel h2 {
+            position: absolute;
+            margin-right: 475px;
+            left: 0;
+            
+            display:inline-block;
+            font-size: small;
+            color: aqua;
+            
+            
+            
+        }
+/*
+        .photo-panel h3 {
+
+            position:absolute;
+            display:inline-block;
+            margin-bottom: 200px;
+            
+            
+        }
+*/
+        .photo-panel img {
+
+            position: relative;
+            display:inline-block;
+            z-index: 1;
+            background-color: #000000;
+            height: auto; 
+            width: auto; 
+            max-width: 300px; 
+            max-height: 300px;
+            
+            
+        }
         .title {
             position: fixed;
             z-index: 1;
@@ -77,6 +145,7 @@
             align-items: center;
             text-align: center;
             display:inline-block;
+            cursor:default;
             
         }
         .venue-button-li {
@@ -90,13 +159,25 @@
             position: relative;
             display: inline-block;
             z-index: 1;
+            
+        }
+        .venue-button-li li{
+            margin-bottom: 5px;
             cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 1px 10px;
+            border-radius: 10px;
+            border: outset;
+            border-width: thin;
         }
         #venue-title {
             font-size: x-large;
             font-family: 'La Belle Aurore', cursive;
             color: black;
             cursor:default;
+            background-color: rgba(255, 0, 0, 0);
+            border: none;
+            text-align: center;
         }
         #venue-guide-text {
             position: relative;
@@ -107,12 +188,12 @@
             text-align: center;
             z-index: 1;
             bottom: 1;
-            padding-top: 20%;
+            padding-top: 10%;
             
         }
         
     </style>
-    <div class='title'><b>2017</b>   <img class='wa-logo' src='http://washedashore.org/wp2/wp-content/uploads/logo-main.png'>   Traveling Exhibit</div>
+    <div class='title'><b>2017</b>   <a href='http://www.washedashore.org/'><img class='wa-logo' src='http://washedashore.org/wp2/wp-content/uploads/logo-main.png'></a>   Traveling Exhibit</div>
     
 </head>
 <body>
@@ -127,12 +208,20 @@
     </div>
 
     
-<div id='venue-guide-text'>Select a venue to see what we will have on display</div>
+<div id='venue-guide-text'>Select a venue to see what&#39;s on display</div>
     
     
 <div id='info-panel'>
     <h1 id='info-panel h1'><h1>
     <h2 id='info-panel h2'><h2></div>
+<div class='photo-panel'>
+    <div id='photo-close'>X</div>
+    <h1>Sea Star of Texas</h1>
+    <h2>This Sea star sculpture is 7.5 ft. tall and weighs 900 lbs.</h2>
+    <h3><img id='current-photo' src='http://i.imgur.com/in1AvT1.png'></h3>
+    
+        </div>
+        
 <div id='map'></div>
 <script>
 mapboxgl.accessToken = 'pk.eyJ1Ijoib25jZWFkYXkiLCJhIjoiY2lqdThkb25mMGQ5bXU3bThhMjlzZWV2cSJ9.9VILu65Um-aP_J04RRO32w';
@@ -169,7 +258,11 @@ $(document).ready(function() {
     $('#info-panel').click(function(event) {
         var sculptureName = String(event.target.textContent)
         console.log(sculptureName)
+        $(".photo-panel").fadeIn("slow");
 
+    });
+    $('#photo-close').click(function(event) {
+        $(".photo-panel").fadeOut("slow");
     });
 }); 
 
@@ -185,7 +278,7 @@ function populateInfoWindow(venue) {
     
     
     infoPanelDivH2.innerHTML = String(newHTML); 
-    infoPanelDivH1.innerHTML = "Sculptures scheduled for <b>" + String(venue); 
+    infoPanelDivH1.innerHTML = "Sculptures found at <i>" + String(venue); 
        
 }
 
