@@ -98,11 +98,10 @@
 
         }
         #info-panel-h1-sculpture-title {
-            font-family: 'La Belle Aurore', cursive;
+            font-family: 'Oswald';
             font-size: 175%;
             font-kerning: normal;
-            color: rgba(58, 96, 123, 0.74);
-            color: #b2f6ff;;
+            color: #48ff64;
             align-content: center;
             align-items: center;
             text-align: center;
@@ -227,15 +226,19 @@
         }
         #venue-guide-text {
             position: relative;
-            font-size: 200%;
+            font-size: 350%;
             font-family: 'La Belle Aurore', cursive;
-            color: #000000;
+            color: #48ff64;
+            text-shadow: 1px 1px #044371;
             cursor:auto;
             text-align: center;
             z-index: 1;
             bottom: 1;
             padding-top: 5%;
             
+        }
+        #venue-info-box {
+            display:none;
         }
         .venue-info-box-main {
             display: none;
@@ -402,7 +405,8 @@ function populateInfoWindow(venue) {
     
     infoPanelDivH2.innerHTML = String(newHTML); 
     //Set text above sculpture Names
-    infoPanelDivH1.innerHTML = "Sculptures Found at <i>" + String(venue);
+    infoPanelDivH1.innerHTML = "Click to View Sculptures Below"
+//    infoPanelDivH1.innerHTML = "Click to View Sculptures Below from <i>" + String(venue);
     venueInfoBoxDiv.innerHTML = String(venueInfoBoxContent);
     
     $("#venue-info-box").fadeIn("fast")
