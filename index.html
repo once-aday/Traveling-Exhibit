@@ -30,7 +30,6 @@
             font-family: 'Oswald';
             border-color: rgba(61, 150, 255, 0.69);
 /*            background-color: rgba(61, 150, 255, 0.69);*/
-            overflow: scroll;
         }
         a:link {
             color: #ffe200;
@@ -53,6 +52,8 @@
         }
         #info-panel {
             margin-bottom: 10px;
+            overflow:scroll;
+
         }
         #info-panel h1 {
             color: #48ff64;
@@ -62,12 +63,20 @@
             
         }
         #info-panel h2 {
-            color: aquamarine;
-            font-size: small;
+            color: #ffe200;
+            font-size: medium;
             text-align: center;
             
+                  
+        }
+        #info-panel-names-h2 {
+            color: #ffe200;
+            font-size: medium;
+            text-align: center;
+            margin-right: 340px;
+
             
-                
+                  
         }
         #info-panel li {
             margin: 2px;
@@ -86,6 +95,22 @@
             align-content: center;
             align-items: center;
             cursor: pointer;
+
+        }
+        #info-panel-h1-sculpture-title {
+            font-family: 'La Belle Aurore', cursive;
+            font-size: 175%;
+            font-kerning: normal;
+            color: rgba(58, 96, 123, 0.74);
+            color: #b2f6ff;;
+            align-content: center;
+            align-items: center;
+            text-align: center;
+            cursor:default;
+            text-shadow: 1px 2px #000000;
+            margin-right: 300px;
+
+    
         }
         #photo-close {
             padding: 3px;
@@ -213,19 +238,20 @@
             
         }
         .venue-info-box-main {
+            position:fixed;
             display: none;
-/*            display:inline-block;*/
+            display:inline-block;
             font-size: 20%;
             text-shadow: 1px 1px #044371;
-            
+            text-align: center;
             font-family: 'Oswald';
             float: right;
-            margin-top: 30px;
-            margin-left: 90px;
-            margin-right: 10px;
-            padding: 1px 10px;
+            margin-top: 20px;
+            margin-right: 30px;
+            margin-left: 650px;
+            padding: 3px 7px;
             color: #ffe200;
-            background-color: rgba(0, 0, 0, 0.3);
+            background-color: rgba(0, 0, 0, 0.4);
             border-radius: 10px;
             border: outset;
             border-width: thin;
@@ -253,7 +279,8 @@
         
     </style>
     <div class='title'><b>2017</b>   <a href='http://www.washedashore.org/'><img class='wa-logo' src='http://washedashore.org/wp2/wp-content/uploads/logo-main.png'></a>   Traveling Exhibit
-    <div class='venue-info-box-main' id='venue-info-box'></div></div>
+<!--    <div class='venue-info-box-main' id='venue-info-box'></div>-->
+    </div>
 </head>
 <body>
 
@@ -272,10 +299,10 @@
     
 <div id='venue-guide-text'>Select a venue to see what&#39;s on display</div>
     
-    
 <div id='info-panel'>
-    <h1 id='info-panel h1'></h1>
-    <h2 id='info-panel h2'></h2></div>
+    <div class='venue-info-box-main' id='venue-info-box'></div>
+    <div id='info-panel-h1-sculpture-title'></div>
+    <div id='info-panel-names-h2'></div></div>
 <div class='photo-panel' id='photo-panel'>
     
     <h1 id='photo-panel h1'>Sea Star of Texas</h1>
@@ -366,8 +393,8 @@ function populatePhotoPanel(sculptureName) {
 function populateInfoWindow(venue) {
     
     
-    var infoPanelDivH2 = document.getElementById('info-panel h2');
-    var infoPanelDivH1 = document.getElementById('info-panel h1');
+    var infoPanelDivH2 = document.getElementById('info-panel-names-h2');
+    var infoPanelDivH1 = document.getElementById('info-panel-h1-sculpture-title');
     var venueInfoBoxDiv = document.getElementById('venue-info-box');
     
     console.log(venueData[venue]);
@@ -376,7 +403,8 @@ function populateInfoWindow(venue) {
     
     
     infoPanelDivH2.innerHTML = String(newHTML); 
-    infoPanelDivH1.innerHTML = "Sculptures found at <i>" + String(venue);
+    //Set text above sculpture Names
+    infoPanelDivH1.innerHTML = "Sculptures Found at <i>" + String(venue);
     venueInfoBoxDiv.innerHTML = String(venueInfoBoxContent);
     
     $("#venue-info-box").fadeIn("fast")
@@ -392,7 +420,7 @@ function flyToVenue(venue) {
     var target = isAtStart ? end : start;
     map.flyTo({
         center: target,
-        zoom: 5,
+        zoom: 4.8,
         speed: 1.5,
         curve: 1
     })
